@@ -19,7 +19,7 @@ func NewClient(authToken string) *Client {
 
 	return &Client{
 		HttpClient: httpClient,
-		AuthToken: authToken,
+		AuthToken:  authToken,
 	}
 }
 

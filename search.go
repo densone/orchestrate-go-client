@@ -7,9 +7,9 @@ import (
 )
 
 type SearchResults struct {
-	Count   uint64         `json:"count"`
-	Results []SearchResult `json:"results"`
-	MaxScore float64 `json:"max_score"`
+	Count    uint64         `json:"count"`
+	Results  []SearchResult `json:"results"`
+	MaxScore float64        `json:"max_score"`
 }
 
 type SearchResult struct {
