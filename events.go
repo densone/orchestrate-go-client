@@ -23,7 +23,7 @@ func (client Client) GetEvents(collection string, key string, kind string) (*byt
 	buf := new(bytes.Buffer)
 	_, err = buf.ReadFrom(resp.Body)
 
-	return buf, nil
+	return buf, err
 }
 
 func (client Client) PutEvent(collection string, key string, kind string, value io.Reader) error {
