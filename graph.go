@@ -2,6 +2,7 @@ package client
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/url"
 )
@@ -44,4 +45,20 @@ func (client Client) GetRelations(collection string, key string, hops []string) 
 	}
 
 	return result, nil
+}
+
+func (client Client) PutRelation(sourceCollection string, sourceKey string, kind string, sinkCollection string, sinkKey string) error {
+	resp, err := client.doRequest("PUT", fmt.Sprintf("%v/%v/relations/%v/%v/%v", sourceCollection, sourceKey, kind, sinkCollection, sinkKey), nil)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 204 {
+		err = newError(resp)
+	}
+
+	return err
 }
