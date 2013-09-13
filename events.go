@@ -8,9 +8,7 @@ import (
 )
 
 func (client Client) GetEvents(collection string, key string, kind string) *bytes.Buffer {
-	req := client.newRequest("GET", collection+"/"+key+"/events/"+kind, nil)
-
-	resp, err := client.HttpClient.Do(req)
+	resp, err := client.doRequest("GET", collection+"/"+key+"/events/"+kind, nil)
 
 	if err != nil {
 		log.Fatal(err)
@@ -25,9 +23,7 @@ func (client Client) GetEvents(collection string, key string, kind string) *byte
 }
 
 func (client Client) PutEvent(collection string, key string, kind string, value io.Reader) error {
-	req := client.newRequest("PUT", collection+"/"+key+"/events/"+kind, value)
-
-	resp, err := client.HttpClient.Do(req)
+	resp, err := client.doRequest("PUT", collection+"/"+key+"/events/"+kind, value)
 
 	if err != nil {
 		log.Fatal(err)

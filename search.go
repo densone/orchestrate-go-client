@@ -25,9 +25,7 @@ func (client Client) Search(collection string, query string) *SearchResults {
 		"query": []string{query},
 	}
 
-	req := client.newRequest("GET", collection+"?"+queryVariables.Encode(), nil)
-
-	resp, err := client.HttpClient.Do(req)
+	resp, err := client.doRequest("GET", collection+"?"+queryVariables.Encode(), nil)
 
 	if err != nil {
 		log.Fatal(err)

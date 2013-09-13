@@ -23,9 +23,7 @@ func (client Client) GetRelations(collection string, key string, hops []string) 
 		"hop": hops,
 	}
 
-	req := client.newRequest("GET", collection+"/"+key+"/relations?"+queryVariables.Encode(), nil)
-
-	resp, err := client.HttpClient.Do(req)
+	resp, err := client.doRequest("GET", collection+"/"+key+"/relations?"+queryVariables.Encode(), nil)
 
 	if err != nil {
 		log.Fatal(err)

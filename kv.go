@@ -8,9 +8,7 @@ import (
 )
 
 func (client Client) Get(collection string, key string) *bytes.Buffer {
-	req := client.newRequest("GET", collection+"/"+key, nil)
-
-	resp, err := client.HttpClient.Do(req)
+	resp, err := client.doRequest("GET", collection+"/"+key, nil)
 
 	if err != nil {
 		log.Fatal(err)
@@ -25,9 +23,7 @@ func (client Client) Get(collection string, key string) *bytes.Buffer {
 }
 
 func (client Client) Put(collection string, key string, value io.Reader) error {
-	req := client.newRequest("PUT", collection+"/"+key, value)
-
-	resp, err := client.HttpClient.Do(req)
+	resp, err := client.doRequest("PUT", collection+"/"+key, value)
 
 	if err != nil {
 		log.Fatal(err)

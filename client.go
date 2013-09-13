@@ -23,7 +23,7 @@ func NewClient(authToken string) *Client {
 	}
 }
 
-func (client Client) newRequest(method, trailingPath string, body io.Reader) *http.Request {
+func (client Client) doRequest(method, trailingPath string, body io.Reader) (*http.Response, error) {
 	req, _ := http.NewRequest(method, rootUri+trailingPath, body)
 
 	req.SetBasicAuth(client.AuthToken, "")
@@ -32,5 +32,5 @@ func (client Client) newRequest(method, trailingPath string, body io.Reader) *ht
 		req.Header.Add("Content-Type", "application/json")
 	}
 
-	return req
+	return client.HttpClient.Do(req)
 }
