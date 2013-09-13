@@ -11,6 +11,7 @@ func (client Client) Get(collection string, key string) (*bytes.Buffer, error) {
 
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 
 	defer resp.Body.Close()
@@ -20,9 +21,9 @@ func (client Client) Get(collection string, key string) (*bytes.Buffer, error) {
 	}
 
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(resp.Body)
+	_, err = buf.ReadFrom(resp.Body)
 
-	return buf, nil
+	return buf, err
 }
 
 func (client Client) Put(collection string, key string, value io.Reader) error {

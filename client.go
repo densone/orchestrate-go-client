@@ -46,7 +46,11 @@ func (e *OrchestrateError) Error() string {
 }
 
 func (client Client) doRequest(method, trailingPath string, body io.Reader) (*http.Response, error) {
-	req, _ := http.NewRequest(method, rootUri+trailingPath, body)
+	req, err := http.NewRequest(method, rootUri+trailingPath, body)
+
+	if err != nil {
+		return nil, err
+	}
 
 	req.SetBasicAuth(client.AuthToken, "")
 

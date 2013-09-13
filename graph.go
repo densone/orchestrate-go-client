@@ -28,6 +28,7 @@ func (client Client) GetRelations(collection string, key string, hops []string) 
 
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 
 	defer resp.Body.Close()
@@ -44,7 +45,7 @@ func (client Client) GetRelations(collection string, key string, hops []string) 
 		log.Fatal(err)
 	}
 
-	return result, nil
+	return result, err
 }
 
 func (client Client) PutRelation(sourceCollection string, sourceKey string, kind string, sinkCollection string, sinkKey string) error {
@@ -52,6 +53,7 @@ func (client Client) PutRelation(sourceCollection string, sourceKey string, kind
 
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
 
 	defer resp.Body.Close()

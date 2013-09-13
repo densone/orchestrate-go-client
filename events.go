@@ -11,6 +11,7 @@ func (client Client) GetEvents(collection string, key string, kind string) (*byt
 
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 
 	defer resp.Body.Close()
@@ -20,7 +21,7 @@ func (client Client) GetEvents(collection string, key string, kind string) (*byt
 	}
 
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(resp.Body)
+	_, err = buf.ReadFrom(resp.Body)
 
 	return buf, nil
 }

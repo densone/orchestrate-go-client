@@ -29,6 +29,7 @@ func (client Client) Search(collection string, query string) (*SearchResults, er
 
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 
 	defer resp.Body.Close()
