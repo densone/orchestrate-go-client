@@ -9,7 +9,7 @@ Usage examples
     c := client.NewClient("Your API Key")
 
     // Get a value
-    val, _ := c.Get("collection", "key")
+    value, _ := c.Get("collection", "key")
 
     // Put a value
     c.Put("collection", "key", strings.NewReader("Some JSON"))
