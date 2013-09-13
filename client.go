@@ -1,6 +1,8 @@
 package client
 
 import (
+	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 )
@@ -14,6 +16,12 @@ type Client struct {
 	AuthToken  string
 }
 
+type OrchestrateError struct {
+	Status  string
+	Message string `json:"message"`
+	Locator string `json:"locator"`
+}
+
 func NewClient(authToken string) *Client {
 	httpClient := &http.Client{}
 
@@ -21,6 +29,20 @@ func NewClient(authToken string) *Client {
 		HttpClient: httpClient,
 		AuthToken:  authToken,
 	}
+}
+
+func newError(resp *http.Response) error {
+	decoder := json.NewDecoder(resp.Body)
+	orchestrateError := new(OrchestrateError)
+	decoder.Decode(orchestrateError)
+
+	orchestrateError.Status = resp.Status
+
+	return orchestrateError
+}
+
+func (e *OrchestrateError) Error() string {
+	return fmt.Sprintf(`%v: %v`, e.Status, e.Message)
 }
 
 func (client Client) doRequest(method, trailingPath string, body io.Reader) (*http.Response, error) {

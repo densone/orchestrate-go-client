@@ -18,7 +18,7 @@ type GraphResult struct {
 	Value      map[string]interface{} `json:"value"`
 }
 
-func (client Client) GetRelations(collection string, key string, hops []string) *GraphResults {
+func (client Client) GetRelations(collection string, key string, hops []string) (*GraphResults, error) {
 	queryVariables := url.Values{
 		"hop": hops,
 	}
@@ -31,13 +31,17 @@ func (client Client) GetRelations(collection string, key string, hops []string) 
 
 	defer resp.Body.Close()
 
+	if resp.StatusCode != 200 {
+		return nil, newError(resp)
+	}
+
 	decoder := json.NewDecoder(resp.Body)
 	result := new(GraphResults)
 	err = decoder.Decode(result)
 
 	if err != nil {
-		println(err.Error())
+		log.Fatal(err)
 	}
 
-	return result
+	return result, nil
 }

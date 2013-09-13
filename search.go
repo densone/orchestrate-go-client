@@ -20,7 +20,7 @@ type SearchResult struct {
 	Value      map[string]interface{} `json:"value"`
 }
 
-func (client Client) Search(collection string, query string) *SearchResults {
+func (client Client) Search(collection string, query string) (*SearchResults, error) {
 	queryVariables := url.Values{
 		"query": []string{query},
 	}
@@ -33,6 +33,10 @@ func (client Client) Search(collection string, query string) *SearchResults {
 
 	defer resp.Body.Close()
 
+	if resp.StatusCode != 200 {
+		return nil, newError(resp)
+	}
+
 	decoder := json.NewDecoder(resp.Body)
 	result := new(SearchResults)
 	err = decoder.Decode(result)
@@ -41,5 +45,5 @@ func (client Client) Search(collection string, query string) *SearchResults {
 		log.Fatal(err)
 	}
 
-	return result
+	return result, err
 }

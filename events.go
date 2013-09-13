@@ -2,12 +2,11 @@ package client
 
 import (
 	"bytes"
-	"errors"
 	"io"
 	"log"
 )
 
-func (client Client) GetEvents(collection string, key string, kind string) *bytes.Buffer {
+func (client Client) GetEvents(collection string, key string, kind string) (*bytes.Buffer, error) {
 	resp, err := client.doRequest("GET", collection+"/"+key+"/events/"+kind, nil)
 
 	if err != nil {
@@ -16,10 +15,14 @@ func (client Client) GetEvents(collection string, key string, kind string) *byte
 
 	defer resp.Body.Close()
 
+	if resp.StatusCode != 200 {
+		return nil, newError(resp)
+	}
+
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(resp.Body)
 
-	return buf
+	return buf, nil
 }
 
 func (client Client) PutEvent(collection string, key string, kind string, value io.Reader) error {
@@ -33,7 +36,7 @@ func (client Client) PutEvent(collection string, key string, kind string, value 
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 204 {
-		err = errors.New(resp.Status)
+		err = newError(resp)
 	}
 
 	return err
