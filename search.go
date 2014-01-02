@@ -1,4 +1,4 @@
-package client
+package orchestrate
 
 import (
 	"encoding/json"

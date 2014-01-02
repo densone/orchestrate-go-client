@@ -6,7 +6,7 @@ A golang client for Orchestrate.io
 Usage examples
 
 ```go
-    c := client.NewClient("Your API Key")
+    c := orchestrate.NewClient("Your API Key")
 
     // Get a value
     value, _ := c.Get("collection", "key")
